@@ -304,11 +304,11 @@ export default function HomePage() {
 
       {/* ── Utility Bar ─────────────────────────────────────────────────────── */}
       <div className="cs-util-bar">
-        <a href="/portal" className="cs-util-link breach">Experienced a breach?</a>
-        <a href="#" className="cs-util-link">Blog</a>
-        <a href="#" className="cs-util-link">Contact Us</a>
-        <a href="#" className="cs-util-link">Careers</a>
-        <a href="#" className="cs-util-link">Latest Innovations</a>
+        <Link href="/contact" className="cs-util-link breach">Experienced a breach?</Link>
+        <Link href="/blog" className="cs-util-link">Blog</Link>
+        <Link href="/contact" className="cs-util-link">Contact Us</Link>
+        <Link href="/careers" className="cs-util-link">Careers</Link>
+        <Link href="/innovations" className="cs-util-link">Latest Innovations</Link>
       </div>
 
       {/* ── Global Header ───────────────────────────────────────────────────── */}
@@ -778,8 +778,9 @@ export default function HomePage() {
               <li><Link href="/about" className="cs-footer-link">About Us</Link></li>
               <li><Link href="/contact" className="cs-footer-link">Contact Sales</Link></li>
               <li><Link href="/contact" className="cs-footer-link">Emergency Hotline</Link></li>
-              <li><Link href="/blog" className="cs-footer-link">Press Releases</Link></li>
-              <li><Link href="/about" className="cs-footer-link">Security Trust</Link></li>
+              <li><Link href="/press" className="cs-footer-link">Press Releases</Link></li>
+              <li><Link href="/trust" className="cs-footer-link">Security Trust</Link></li>
+              <li><Link href="/careers" className="cs-footer-link">Careers</Link></li>
             </ul>
           </div>
         </div>
@@ -789,9 +790,11 @@ export default function HomePage() {
         <div className="cs-footer-bottom">
           <div className="cs-footer-copy">© 2026 Threatenx Inc. All rights reserved.</div>
           <div className="cs-footer-legal">
-            {["Privacy Notice", "Terms of Service", "Cookie Policy", "GDPR Data Request", "Accessibility"].map(l => (
-              <a key={l} href="#" className="cs-footer-legal-link">{l}</a>
-            ))}
+            <Link href="/privacy" className="cs-footer-legal-link">Privacy Notice</Link>
+            <Link href="/terms" className="cs-footer-legal-link">Terms of Service</Link>
+            <Link href="/cookies" className="cs-footer-legal-link">Cookie Policy</Link>
+            <Link href="/privacy" className="cs-footer-legal-link">GDPR Data Request</Link>
+            <Link href="/trust" className="cs-footer-legal-link">Accessibility</Link>
           </div>
         </div>
       </footer>
