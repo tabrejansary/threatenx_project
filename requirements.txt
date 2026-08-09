@@ -1,0 +1,16 @@
+# Threatenx — Python agent backend dependencies
+# Band.ai (Thenvoi) mesh SDK. Imports as `band`; provides Agent, SimpleAdapter,
+# load_agent_config, and the band_* platform tools.
+band-sdk>=1.0.0
+
+# "Mix and Match" LLM providers
+google-generativeai>=0.8.0   # Gemini 2.5 Flash — fast structured worker parsing
+groq>=0.11.0                 # Llama 3 70B (versatile) — Incident Commander reasoning
+
+# Data contracts & config
+pydantic>=2.0
+python-dotenv>=1.0
+pyyaml>=6.0
+
+# Dashboard bridge (live Band room -> dashboard WebSocket stream)
+aiohttp>=3.10

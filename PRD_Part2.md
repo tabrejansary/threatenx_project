@@ -1,0 +1,146 @@
+# Product Requirements Document (PRD) - Part 2
+## Threatenx: Detect. Decide. Defend.
+**Project Phase:** Initial Specification & Multi-Agent Architecture Design  
+**Author:** Multiagent AI System Developer  
+**Status:** Draft  
+
+---
+
+## 1. Non-Functional Requirements
+
+### 1.1 Performance & Latency
+1. **Agent Message Latency:** The round-trip latency for agent-to-agent message processing through the Band mesh must not exceed 2.5 seconds (excluding LLM inference latency).
+2. **LLM Inference Response Time:** Time-to-first-token (TTFT) for analysis agents should remain below 1.5 seconds. Average completion time must be under 15 seconds per analysis loop.
+3. **Dashboard UI Refreshes:** Real-time updates on the human operator dashboard must render within 200 milliseconds of a message event being emitted by the Band mesh.
+
+### 1.2 Scalability & Resource Utilization
+1. **Simultaneous Incidents:** The platform must support up to 50 concurrent incident triage rooms without degradation in orchestration speed or token throttling.
+2. **Context Window Management:** Agents must dynamically compress, summarize, or truncate historical room conversations to fit within standard model context windows (e.g., 8k to 32k tokens) while preserving key forensic indicators.
+3. **API Rate Limiting:** The integration layer must gracefully queue, batch, and retry requests to external SIEM/EDR endpoints and LLM providers to handle rate limiting.
+
+### 1.3 Availability & Fault Tolerance
+1. **System Uptime:** The platform orchestration layer and dashboard must achieve 99.9% uptime (excluding external dependencies like third-party LLM APIs and Band platform uptime).
+2. **Agent Resilience:** If an individual agent crashes or disconnects, the Incident Commander must log the failure, alert the Human Security Officer, and attempt to spawn a backup agent instance or degrade operations gracefully (e.g., skipping malware analysis if that agent fails).
+3. **Data Durability:** Every message exchanged within a Band room must be persisted to a local, encrypted PostgreSQL audit database in real-time.
+
+---
+
+## 2. Dashboard Visualizer Requirements
+
+The Threatenx dashboard is the central interface for the Human Security Officer to monitor active agent investigations, review synthesized dossiers, and execute containment procedures.
+
+```
++-----------------------------------------------------------------------------------+
+|  Threatenx // Active Incident Portal                    User: admin | 10:15 UTC   |
++-----------------------------------------------------------------------------------+
+| [Incidents List]    | Incident #2026-06-14-geo -- CRITICAL (PII Data Breach)      |
+| > #2026-06-14-geo   +-------------------------------------------------------------+
+|   #2026-06-11-dns   | [System Timeline]                                           |
+|   #2026-06-08-brute |  - 10:15:00 Anomaly detected: Login from Romania (IP)       |
+|                     |  - 10:15:30 DB-Prod-09 accessed; 4.2 GB exfiltrated         |
+|                     |  - 10:16:00 dump_pii.py analyzed: Trojan exfiltration tool  |
+|                     |  - 10:16:30 Severity rated CRITICAL; GDPR regulatory alert  |
+|                     |  - 10:17:00 PR drafts completed; Legal files prepared       |
+|                     +-------------------------------------------------------------+
+|                     | [Band Real-Time Collaboration Feed]                         |
+|                     | [LogAnalysisAgent]: Traced access path to DB-Prod-09.       |
+|                     | [MalwareAgent]: dump_pii.py matches sandbox Trojan.         |
+|                     | [ComplianceAgent]: GDPR 72h notice required. [View Document]|
+|                     +-------------------------------------------------------------+
+|                     | [Proposed Actions (Requires Approval)]                      |
+|                     | [ ] Block Remote IP: 185.112.144.12                         |
+|                     | [ ] Revoke AD Credentials for user `jsmith`                 |
+|                     | [ ] Isolate Host: DB-Prod-09 (Restricted Queries)           |
+|                     |                                 [APPROVE STAGED ACTIONS]    |
++-----------------------------------------------------------------------------------+
+```
+
+### 2.1 User Interface Sections
+1. **Incident Sidebar:** A list of active, triaged, and resolved incidents sorted by severity (Critical, High, Medium, Low) and timestamp.
+2. **Interactive Event Timeline:** A visual, chronological tree of activities mapping the lifetime of the incident from initial alert to the latest agent findings.
+3. **Live Agent Collaboration Stream:** A chat-like pane mirroring the active Band communication room. Messages are tagged with the sending agent's name, avatar, and framework identifier.
+4. **Action Center (HITL Portal):** A dedicated area listing containment proposals generated by the Incident Commander Agent. Includes checkboxes to selectively approve actions, a field to input comments/overrides, and a high-visibility execution button.
+5. **Dossier & Artifact Viewer:** Tabbed sub-views to review raw logs parsed by the Log Analysis Agent, malware reports from the Malware Agent, and regulatory notification PDFs/crisis communications drafted by the Compliance and PR Agents.
+
+### 2.2 Functional Requirements
+- **Live Stream Updates:** The dashboard must leverage WebSockets to display incoming agent messages dynamically without manual page reloading.
+- **Action Execution:** Clicking "Approve" must send an HTTP POST request to the orchestration backend containing the approved task identifiers, triggering the local integration scripts to execute API calls to firewalls/EDR.
+- **Manual Input Box:** The human must be able to send manual messages directly into the Band room to prompt agents for additional clarification (e.g., *"@LogAnalysisAgent did you find any other accounts accessed by this IP?"*).
+
+---
+
+## 3. Band (Thenvoi) Integration Layer
+
+### 3.1 Room-Based Collaboration Architecture
+Threatenx uses **Band (Thenvoi)** as its event and messaging mesh. The integration works as follows:
+- **Shared Incident Rooms:** Each security incident corresponds to a unique Band Room UUID. When a detection event occurs, Threatenx calls the Band API to create this room and generates invites for the registered agents.
+- **Hybrid Edge/Cloud Architecture:** Agents can run in independent Docker containers located *inside the customer's secure VPC* (Edge), directly querying local databases without exposing those databases to the internet. They do not share memory or process spaces.
+- **Common Interaction Language:** Communication is structured using JSON payloads over Band's WebSocket interface to the cloud coordination layer.
+
+### 3.2 Agent Connectivity Protocol (ACP)
+- Agents connect to the Band platform using the `thenvoi-sdk` (Python/JS).
+- Authentication is handled using agent-specific credentials loaded dynamically from an `agent_config.yaml` file:
+  - `agent_id`: Identifies the agent profile.
+  - `api_key`: Verifies authorization to read/write to Band rooms.
+- The SDK manages WebSocket listener loops. When a `message_created` event occurs where an agent is `@mentioned`, the SDK wakes the agent's LLM engine, passes the room history as context, and awaits the agent's logic.
+
+```
+       +---------------------------------------------+
+       |                  Band.ai                    |
+       |                                             |
+       |  WebSocket Event         REST API call      |
+       |  (Message Created)       (Post Response)    |
+       +-------+-------------------------^-----------+
+               |                         |
+               |                         |
+       +-------v-------------------------+-----------+
+       |            thenvoi-sdk-python               |
+       |                                             |
+       |  +---------------------------------------+  |
+       |  |          Agent Logic Loop             |  |
+       |  |  1. Parse Event Context               |  |
+       |  |  2. Invoke LLM / Local Tools          |  |
+       |  |  3. Formulate response payload        |  |
+       |  +---------------------------------------+  |
+       +---------------------------------------------+
+```
+
+### 3.3 State Management & Memory Synchronization
+- **Platform-Mediated Memory:** Rather than using a database instance shared among agents, the Band room transcript acts as the single source of truth (SSoT) for the incident.
+- **State Serialization:** When an agent updates its findings, it serializes its structured data (e.g., threat models, file hashes) into the metadata block of its published message. This allows other agents to read the metadata programmatically rather than trying to parse markdown output.
+
+### 3.4 Agent Framework Strategy (Composition Architecture)
+While frameworks like CrewAI and LangGraph are popular, Threatenx actively avoids them in favor of a standard Python "Composition Architecture" using the `thenvoi-sdk`.
+- **The SDK Architecture:** We subclass the SDK's `SimpleAdapter` to build a single, reusable `BaseThreatenxAdapter`. This handles the WebSocket connections and routes the `on_message` payloads directly to the LLMs.
+- **Redundancy:** CrewAI's primary value proposition is multi-agent coordination, but the **Band.ai** platform already natively handles state, routing via `@mentions`, memory, and chat history.
+- **Observability:** Heavy "black-box" frameworks abstract LLM calls and system prompts, making debugging difficult when an agent hallucinates or loops. Standard Python keeps the execution path deterministic.
+- **"Mix and Match" LLMs:** By using lightweight scripts integrated with the `thenvoi-sdk-python`, agents can process JSON structures rapidly, allowing mixing of models (e.g., `gemini-1.5-flash` for fast, structured parsing, and `Llama-3-70B` via Groq for the Commander) without framework bloat.
+
+---
+
+## 4. Success Metrics & KPIs
+
+To measure the effectiveness of the Threatenx multi-agent platform, organizations must track the following metrics:
+
+| Metric Category | KPI Name | Target Threshold | Measurement Frequency |
+| :--- | :--- | :--- | :--- |
+| **Response Speed** | Mean Time to Detect (MTTD) | < 10 seconds from alert log ingestion | Monthly |
+| **Response Speed** | Mean Time to Dossier (MTTDos) | < 3 minutes | Monthly |
+| **Response Speed** | Containment Approval-to-Execution Latency | < 500 milliseconds | Weekly |
+| **Analysis Quality** | Agent Collaboration Coherence Rate | > 95% (No logical loops or out-of-order comments) | Monthly |
+| **Analysis Quality** | Action Recommendation Accuracy | > 90% (Approved actions vs. rejected actions) | Monthly |
+| **Legal/Compliance** | Drafting Compliance Rate | 100% of PII incidents draft GDPR within 15 mins | Continuously |
+| **Platform Efficacy** | Human Intervention Offset | 80% reduction in manual investigative query writing | Quarterly |
+
+---
+
+## 5. Future Scope & Roadmaps
+
+### 5.1 Playbook Generation via Reinforcement Learning
+Develop a feedback loop where human decisions (approvals, rejections, modifications of playbooks) are stored as training pairs. Use reinforcement learning to fine-tune the Incident Commander Agent to tailor response recommendations specifically to organizational habits.
+
+### 5.2 Automated Patching and Vulnerability Shielding
+Integrate the Agent Mesh with automated configuration management systems (e.g., Ansible, Terraform, Kubernetes Controllers) to not only contain IP addresses or disable users but dynamically apply security patches, write temporary firewall rules, or redeploy clean microservices in isolation.
+
+### 5.3 Multi-Tenant Workspace Isolation
+Extend the Band integration layer to support multi-tenant MSSP operations. Build granular workspace partitions, ensuring that agents running investigations for Client A cannot discover or read messages from rooms allocated to Client B, complying with enterprise security silos.
