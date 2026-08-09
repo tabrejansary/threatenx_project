@@ -320,14 +320,12 @@ export default function HomePage() {
           </Link>
           <nav>
             <ul className="cs-nav-menu">
-              {["Platform", "Services", "Solutions", "Why Threatenx", "Resources", "Pricing"].map(item => (
-                <li key={item}>
-                  <a href="#" className="cs-nav-item">
-                    {item}
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                  </a>
-                </li>
-              ))}
+              <li><Link href="/portal" className="cs-nav-item">Platform</Link></li>
+              <li><Link href="/solutions" className="cs-nav-item">Solutions</Link></li>
+              <li><Link href="/docs" className="cs-nav-item">Documentation</Link></li>
+              <li><Link href="/pricing" className="cs-nav-item">Pricing</Link></li>
+              <li><Link href="/about" className="cs-nav-item">About</Link></li>
+              <li><Link href="/blog" className="cs-nav-item">Blog</Link></li>
             </ul>
           </nav>
         </div>
@@ -738,9 +736,12 @@ export default function HomePage() {
           <div>
             <div className="cs-footer-col-title">Platform</div>
             <ul className="cs-footer-links">
-              {["Threat Detection", "Log Analysis", "Malware Sandbox", "Risk Assessment", "Compliance Clock", "Incident Commander"].map(l => (
-                <li key={l}><a href="#platform" className="cs-footer-link">{l}</a></li>
-              ))}
+              <li><Link href="/portal" className="cs-footer-link">Threat Detection</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">Log Analysis</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">Malware Sandbox</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">Risk Assessment</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">Compliance Clock</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">Incident Commander</Link></li>
             </ul>
           </div>
 
@@ -748,9 +749,12 @@ export default function HomePage() {
           <div>
             <div className="cs-footer-col-title">Solutions</div>
             <ul className="cs-footer-links">
-              {["Stop Breaches", "Prevent Data Leakage", "Secure Cloud", "Stop Ransomware", "GDPR Compliance", "HITL Response"].map(l => (
-                <li key={l}><a href="#solutions" className="cs-footer-link">{l}</a></li>
-              ))}
+              <li><Link href="/solutions" className="cs-footer-link">Stop Breaches</Link></li>
+              <li><Link href="/solutions" className="cs-footer-link">Prevent Data Leakage</Link></li>
+              <li><Link href="/solutions" className="cs-footer-link">Secure Cloud</Link></li>
+              <li><Link href="/solutions" className="cs-footer-link">Stop Ransomware</Link></li>
+              <li><Link href="/solutions" className="cs-footer-link">GDPR Compliance</Link></li>
+              <li><Link href="/portal" className="cs-footer-link">HITL Response</Link></li>
             </ul>
           </div>
 
@@ -758,9 +762,12 @@ export default function HomePage() {
           <div>
             <div className="cs-footer-col-title">Resources</div>
             <ul className="cs-footer-links">
-              {["Incident Portal", "Documentation", "Agent Architecture", "API Reference", "Scenario Library", "Blog"].map(l => (
-                <li key={l}><a href="#" className="cs-footer-link">{l}</a></li>
-              ))}
+              <li><Link href="/portal" className="cs-footer-link">Incident Portal</Link></li>
+              <li><Link href="/docs" className="cs-footer-link">Documentation</Link></li>
+              <li><Link href="/docs" className="cs-footer-link">Agent Architecture</Link></li>
+              <li><Link href="/docs" className="cs-footer-link">API Reference</Link></li>
+              <li><Link href="/pricing" className="cs-footer-link">Pricing & Quotas</Link></li>
+              <li><Link href="/blog" className="cs-footer-link">Blog</Link></li>
             </ul>
           </div>
 
@@ -768,9 +775,11 @@ export default function HomePage() {
           <div>
             <div className="cs-footer-col-title">Company</div>
             <ul className="cs-footer-links">
-              {["About Us", "Careers", "Press Releases", "Contact Sales", "Partner Program", "Security Trust"].map(l => (
-                <li key={l}><a href="#" className="cs-footer-link">{l}</a></li>
-              ))}
+              <li><Link href="/about" className="cs-footer-link">About Us</Link></li>
+              <li><Link href="/contact" className="cs-footer-link">Contact Sales</Link></li>
+              <li><Link href="/contact" className="cs-footer-link">Emergency Hotline</Link></li>
+              <li><Link href="/blog" className="cs-footer-link">Press Releases</Link></li>
+              <li><Link href="/about" className="cs-footer-link">Security Trust</Link></li>
             </ul>
           </div>
         </div>
