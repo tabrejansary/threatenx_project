@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -79,6 +79,13 @@ export default function BlogArticlePage() {
 
       {/* Main Article Body */}
       <main style={{ padding: "60px 40px 90px", maxWidth: 860, margin: "0 auto", fontSize: 16, lineHeight: 1.8, color: "#222" }}>
+        {/* Article Banner Image */}
+        {post.image && (
+          <div style={{ borderRadius: 8, overflow: "hidden", marginBottom: 40, border: "1px solid #e0e0e0", boxShadow: "0 8px 30px rgba(0,0,0,0.1)" }}>
+            <img src={post.image} alt={post.title} style={{ width: "100%", height: 380, objectFit: "cover" }} />
+          </div>
+        )}
+
         <p style={{ fontSize: 19, fontWeight: 500, color: "#444", lineHeight: 1.6, marginBottom: 36, borderLeft: `4px solid ${post.accentColor}`, paddingLeft: 20 }}>
           {post.excerpt}
         </p>

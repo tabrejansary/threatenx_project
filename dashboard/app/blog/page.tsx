@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
-function ShieldIcon({ size = 32, color = "#ec0000" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-      <path d="M20 3L36 10v11c0 9.5-7.5 17.5-16 18.5C11.5 38.5 4 30.5 4 21V10L20 3z" fill={color} />
-      <path d="M14 20l4.5 4.5L26 15" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import { UtilBar, SiteHeader, SiteFooter } from "../../components/SiteLayout";
 
 export const BLOG_POSTS = [
   {
@@ -22,6 +14,7 @@ export const BLOG_POSTS = [
     author: "Dr. Aris Vance",
     authorRole: "Chief AI Architect",
     featured: true,
+    image: "/blog/falcon_2026.png",
     excerpt: "Monolithic LLM prompts fail when triage requires real-time log parsing, malware detonation, and legal compliance drafting. Here is how multi-agent federation solves context overflow.",
     bgGradient: "linear-gradient(135deg, #1a0000 0%, #0a0a0a 100%)",
     accentColor: "#ec0000",
@@ -39,6 +32,7 @@ Result: MTTR reduced from 4.2h to 2m 14s`
     author: "Elena Rostova",
     authorRole: "Lead Compliance Engineer",
     featured: false,
+    image: "/blog/gdpr_breach.png",
     excerpt: "A deep dive into how a valid MFA session from Romania resulted in 4.2GB of PII bulk download — and how Threatenx Compliance Agent automated regulatory disclosures.",
     bgGradient: "linear-gradient(135deg, #0a1f0a 0%, #0a0a0a 100%)",
     accentColor: "#22c55e",
@@ -56,6 +50,7 @@ Exfiltrated Records: 150,000 PII rows`
     author: "Marcus Thorne",
     authorRole: "Principal Cloud Security Researcher",
     featured: false,
+    image: "/blog/aws_cryptojacking.png",
     excerpt: "Unauthorised GPU EC2 provisioning can cost enterprises over $84,000 per day. Learn how CloudTrail correlation agents revoke abused access keys instantly.",
     bgGradient: "linear-gradient(135deg, #1a1500 0%, #0a0a0a 100%)",
     accentColor: "#eab308",
@@ -73,6 +68,7 @@ ASN: AS209 (Russia) -> Key Revoked`
     author: "Kaelen Voss",
     authorRole: "Senior Malware Analyst",
     featured: false,
+    image: "/blog/blackforge_ransomware.png",
     excerpt: "Reverse-engineering BlackForge ransomware payload binaries. How Malware Analysis Agent detects SMB share encryption and shadow copy deletion commands.",
     bgGradient: "linear-gradient(135deg, #1a0a1f 0%, #0a0a0a 100%)",
     accentColor: "#a855f7",
@@ -90,6 +86,7 @@ Extension: .forge -> C2 Beacon Flagged`
     author: "Sarah Jenkins",
     authorRole: "VP of Product Security",
     featured: false,
+    image: "/blog/hitl_human_loop.png",
     excerpt: "Fully autonomous execution can inadvertently sever critical production systems. Threatenx keeps Security Officers in total control with single-click HITL playbooks.",
     bgGradient: "linear-gradient(135deg, #0a1a1f 0%, #0a0a0a 100%)",
     accentColor: "#06b6d4",
@@ -107,6 +104,7 @@ Status: Pending Security Officer Approval`
     author: "Dr. Aris Vance",
     authorRole: "Chief AI Architect",
     featured: false,
+    image: "/blog/groq_llama_benchmark.png",
     excerpt: "How sub-500ms inference speeds enable the Incident Commander agent to synthesize 6 parallel analysis streams into a unified executive dossier in real time.",
     bgGradient: "linear-gradient(135deg, #1f0a14 0%, #0a0a0a 100%)",
     accentColor: "#f43f5e",
@@ -135,42 +133,8 @@ export default function BlogIndexPage() {
 
   return (
     <div style={{ background: "#ffffff", color: "#111", minHeight: "100vh" }}>
-      {/* Utility Bar */}
-      <div className="cs-util-bar">
-        <Link href="/contact" className="cs-util-link breach">Experienced a breach?</Link>
-        <Link href="/blog" className="cs-util-link">Blog</Link>
-        <Link href="/contact" className="cs-util-link">Contact Us</Link>
-        <Link href="/careers" className="cs-util-link">Careers</Link>
-        <Link href="/innovations" className="cs-util-link">Latest Innovations</Link>
-      </div>
-
-      {/* Header */}
-      <header className="cs-header">
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          <Link href="/" className="cs-brand">
-            <ShieldIcon size={34} color="#ec0000" />
-            <span className="cs-logo-text">Threaten<span>x</span></span>
-          </Link>
-          <nav>
-            <ul className="cs-nav-menu">
-              <li><Link href="/portal" className="cs-nav-item">Platform</Link></li>
-              <li><Link href="/solutions" className="cs-nav-item">Solutions</Link></li>
-              <li><Link href="/docs" className="cs-nav-item">Documentation</Link></li>
-              <li><Link href="/pricing" className="cs-nav-item">Pricing</Link></li>
-              <li><Link href="/about" className="cs-nav-item">About</Link></li>
-              <li><Link href="/blog" className="cs-nav-item" style={{ color: "#ec0000" }}>Blog</Link></li>
-            </ul>
-          </nav>
-        </div>
-        <div className="cs-header-right">
-          <Link href="/login" className="cs-icon-btn" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "0 14px", width: "auto", borderRadius: 4, fontSize: 13, fontWeight: 700, color: "#111", textDecoration: "none" }}>
-            Log in
-          </Link>
-          <Link href="/signup" className="cs-btn-red">
-            Start free trial →
-          </Link>
-        </div>
-      </header>
+      <UtilBar />
+      <SiteHeader activePage="Blog" />
 
       {/* Hero Section */}
       <section style={{ background: "#0a0a0a", color: "#fff", padding: "70px 40px 60px", borderBottom: "1px solid #1a1a1a" }}>
@@ -186,31 +150,29 @@ export default function BlogIndexPage() {
           {/* Featured Hero Card */}
           <Link href={`/blog/${featuredPost.slug}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
             <div style={{
-              background: featuredPost.bgGradient,
-              border: `1px solid ${featuredPost.accentColor}44`,
+              background: "#111111",
+              border: `1px solid ${featuredPost.accentColor}66`,
               borderRadius: 8,
-              padding: 40,
+              overflow: "hidden",
               display: "grid",
-              gridTemplateColumns: "1.2fr 0.8fr",
-              gap: 40,
-              alignItems: "center",
-              transition: "transform 0.2s, border-color 0.2s",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 0,
               boxShadow: "0 20px 60px rgba(0,0,0,0.5)"
             }}>
-              <div>
+              <div style={{ padding: 44, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
                   <span style={{ fontSize: 10, fontWeight: 900, background: featuredPost.accentColor, color: "#fff", padding: "3px 10px", borderRadius: 3, letterSpacing: 1 }}>FEATURED POST</span>
                   <span style={{ fontSize: 11, fontWeight: 800, color: featuredPost.accentColor }}>{featuredPost.category}</span>
                   <span style={{ fontSize: 12, color: "#666" }}>• {featuredPost.readTime}</span>
                 </div>
-                <h2 style={{ fontSize: 32, fontWeight: 900, color: "#fff", lineHeight: 1.25, marginBottom: 16, letterSpacing: "-0.5px" }}>
+                <h2 style={{ fontSize: 30, fontWeight: 900, color: "#fff", lineHeight: 1.25, marginBottom: 16, letterSpacing: "-0.5px" }}>
                   {featuredPost.title}
                 </h2>
-                <p style={{ fontSize: 15, color: "#aaa", lineHeight: 1.65, marginBottom: 24 }}>
+                <p style={{ fontSize: 14, color: "#aaa", lineHeight: 1.65, marginBottom: 28 }}>
                   {featuredPost.excerpt}
                 </p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#222", border: `2px solid ${featuredPost.accentColor}`, display: "flex", alignItems: "center", justifyCenter: "center", color: "#fff", fontWeight: 800, fontSize: 12, textTransform: "uppercase" }}>
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#222", border: `2px solid ${featuredPost.accentColor}`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 12 }}>
                     {featuredPost.author.split(" ").map(n=>n[0]).join("")}
                   </div>
                   <div>
@@ -220,17 +182,15 @@ export default function BlogIndexPage() {
                 </div>
               </div>
 
-              {/* Code Visual Card */}
-              <div style={{ background: "#050505", border: "1px solid #222", borderRadius: 6, padding: 24, fontFamily: "JetBrains Mono, monospace" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, borderBottom: "1px solid #1a1a1a", paddingBottom: 10 }}>
-                  <span style={{ fontSize: 24 }}>{featuredPost.visualIcon}</span>
-                  <span style={{ fontSize: 10, color: featuredPost.accentColor, fontWeight: 700 }}>TELEMETRY_LOG</span>
-                </div>
-                <pre style={{ fontSize: 11.5, color: "#22c55e", lineHeight: 1.6, whiteSpace: "pre-wrap", margin: 0 }}>
-                  {featuredPost.visualCode}
-                </pre>
-                <div style={{ marginTop: 20, paddingTop: 14, borderTop: "1px solid #1a1a1a", display: "flex", justifyContent: "flex-end" }}>
-                  <span style={{ color: featuredPost.accentColor, fontSize: 13, fontWeight: 800 }}>Read Article →</span>
+              {/* Feature Hero Image Banner */}
+              <div style={{ position: "relative", minHeight: 320, background: "#050505" }}>
+                <img
+                  src={featuredPost.image}
+                  alt={featuredPost.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <div style={{ position: "absolute", bottom: 16, left: 16, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)", border: `1px solid ${featuredPost.accentColor}88`, borderRadius: 4, padding: "8px 14px", fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: "#22c55e" }}>
+                  {featuredPost.visualCode.split("\n")[0]}
                 </div>
               </div>
             </div>
@@ -239,7 +199,7 @@ export default function BlogIndexPage() {
       </section>
 
       {/* Filter and Search Bar */}
-      <section style={{ background: "#ffffff", padding: "30px 40px", borderBottom: "1px solid #eee", sticky: "top", top: 68, zIndex: 100 }}>
+      <section style={{ background: "#ffffff", padding: "24px 40px", borderBottom: "1px solid #eee", position: "sticky", top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           {/* Category Tabs */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -288,7 +248,7 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Multi-layout Card Grid */}
+      {/* Multi-layout Card Grid with Custom Images */}
       <section style={{ padding: "60px 40px 90px", maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
           {filteredPosts.map((post) => (
@@ -315,23 +275,27 @@ export default function BlogIndexPage() {
                 e.currentTarget.style.borderColor = "#e0e0e0";
               }}
               >
-                {/* Visual Header Banner */}
-                <div style={{ background: post.bgGradient, padding: 24, position: "relative", minHeight: 140, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 9, fontWeight: 900, color: "#fff", background: post.accentColor, padding: "2px 8px", borderRadius: 2, letterSpacing: 0.5 }}>
+                {/* Visual Image Header */}
+                <div style={{ position: "relative", height: 180, overflow: "hidden", background: "#050505" }}>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div style={{ position: "absolute", top: 12, left: 12, display: "flex", gap: 6 }}>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: "#fff", background: post.accentColor, padding: "3px 8px", borderRadius: 3, letterSpacing: 0.5 }}>
                       {post.category}
                     </span>
-                    <span style={{ fontSize: 20 }}>{post.visualIcon}</span>
                   </div>
-                  <pre style={{ fontSize: 10, color: post.accentColor, fontFamily: "JetBrains Mono, monospace", margin: 0, opacity: 0.9 }}>
-                    {post.visualCode.split("\n")[0]}
-                  </pre>
+                  <div style={{ position: "absolute", bottom: 10, right: 12, background: "rgba(0,0,0,0.75)", color: "#fff", padding: "2px 8px", borderRadius: 12, fontSize: 11, fontWeight: 600 }}>
+                    {post.readTime}
+                  </div>
                 </div>
 
                 {/* Card Body */}
                 <div style={{ padding: 24, flex: 1, display: "flex", flexDirection: "column" }}>
                   <div style={{ fontSize: 11, color: "#888", marginBottom: 8, fontWeight: 600 }}>
-                    {post.date} • {post.readTime}
+                    {post.date}
                   </div>
                   <h3 style={{ fontSize: 18, fontWeight: 900, color: "#000", lineHeight: 1.35, marginBottom: 12 }}>
                     {post.title}
@@ -356,85 +320,7 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="cs-footer">
-        <div className="cs-footer-top">
-          <div className="cs-footer-brand-block">
-            <Link href="/" className="cs-brand" style={{ gap: 10 }}>
-              <ShieldIcon size={30} color="#ec0000" />
-              <span className="cs-logo-text" style={{ color: "#fff" }}>Threaten<span>x</span></span>
-            </Link>
-            <p className="cs-footer-brand-tagline">
-              The world&apos;s leading collaborative multi-agent cybersecurity incident response platform. 7 AI agents. 1 human decision. Zero breaches.
-            </p>
-            <div className="cs-footer-certs" style={{ marginTop: 20 }}>
-              {["SOC 2 TYPE II", "ISO 27001", "GDPR COMPLIANT", "FedRAMP READY"].map(c => (
-                <span key={c} className="cs-cert-badge">{c}</span>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="cs-footer-col-title">Platform</div>
-            <ul className="cs-footer-links">
-              <li><Link href="/platform/threat-detection" className="cs-footer-link">Threat Detection</Link></li>
-              <li><Link href="/platform/log-analysis" className="cs-footer-link">Log Analysis</Link></li>
-              <li><Link href="/platform/malware-sandbox" className="cs-footer-link">Malware Sandbox</Link></li>
-              <li><Link href="/platform/risk-assessment" className="cs-footer-link">Risk Assessment</Link></li>
-              <li><Link href="/platform/compliance-clock" className="cs-footer-link">Compliance Clock</Link></li>
-              <li><Link href="/platform/incident-commander" className="cs-footer-link">Incident Commander</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="cs-footer-col-title">Solutions</div>
-            <ul className="cs-footer-links">
-              <li><Link href="/solutions" className="cs-footer-link">Stop Breaches</Link></li>
-              <li><Link href="/solutions" className="cs-footer-link">Prevent Data Leakage</Link></li>
-              <li><Link href="/solutions" className="cs-footer-link">Secure Cloud</Link></li>
-              <li><Link href="/solutions" className="cs-footer-link">Stop Ransomware</Link></li>
-              <li><Link href="/solutions" className="cs-footer-link">GDPR Compliance</Link></li>
-              <li><Link href="/portal" className="cs-footer-link">HITL Response</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="cs-footer-col-title">Resources</div>
-            <ul className="cs-footer-links">
-              <li><Link href="/portal" className="cs-footer-link">Incident Portal</Link></li>
-              <li><Link href="/docs" className="cs-footer-link">Documentation</Link></li>
-              <li><Link href="/docs" className="cs-footer-link">Agent Architecture</Link></li>
-              <li><Link href="/docs" className="cs-footer-link">API Reference</Link></li>
-              <li><Link href="/pricing" className="cs-footer-link">Pricing & Quotas</Link></li>
-              <li><Link href="/blog" className="cs-footer-link">Blog</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="cs-footer-col-title">Company</div>
-            <ul className="cs-footer-links">
-              <li><Link href="/about" className="cs-footer-link">About Us</Link></li>
-              <li><Link href="/contact" className="cs-footer-link">Contact Sales</Link></li>
-              <li><Link href="/contact" className="cs-footer-link">Emergency Hotline</Link></li>
-              <li><Link href="/press" className="cs-footer-link">Press Releases</Link></li>
-              <li><Link href="/trust" className="cs-footer-link">Security Trust</Link></li>
-            </ul>
-          </div>
-        </div>
-
-        <hr className="cs-footer-divider" />
-
-        <div className="cs-footer-bottom">
-          <div className="cs-footer-copy">© 2026 Threatenx Inc. All rights reserved.</div>
-          <div className="cs-footer-legal">
-            <Link href="/privacy" className="cs-footer-legal-link">Privacy Notice</Link>
-            <Link href="/terms" className="cs-footer-legal-link">Terms of Service</Link>
-            <Link href="/cookies" className="cs-footer-legal-link">Cookie Policy</Link>
-            <Link href="/privacy" className="cs-footer-legal-link">GDPR Data Request</Link>
-            <Link href="/trust" className="cs-footer-legal-link">Accessibility</Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
