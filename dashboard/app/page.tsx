@@ -335,10 +335,11 @@ export default function HomePage() {
           <button className="cs-icon-btn" aria-label="Search">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="M16.5 16.5l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
-          <button className="cs-icon-btn" aria-label="Account">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-          </button>
-          <Link href="/portal" className="cs-btn-red" id="btn-start-free-trial">
+          <Link href="/login" className="cs-icon-btn" aria-label="Account" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "0 14px", width: "auto", borderRadius: 4, fontSize: 13, fontWeight: 700, color: "#111", textDecoration: "none" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+            Log in
+          </Link>
+          <Link href="/signup" className="cs-btn-red" id="btn-start-free-trial">
             Start free trial →
           </Link>
         </div>
@@ -368,7 +369,7 @@ export default function HomePage() {
             <h1 className="cs-hero-h1">{HERO_SLIDES[slide].title}</h1>
             <p className="cs-hero-sub">{HERO_SLIDES[slide].sub}</p>
             <div className="cs-hero-ctas">
-              <Link href="/portal" className="cs-btn-red-lg" id="hero-btn-primary">
+              <Link href="/signup" className="cs-btn-red-lg" id="hero-btn-primary">
                 {HERO_SLIDES[slide].cta1} →
               </Link>
               <a href="#demo" className="cs-btn-white-outline">{HERO_SLIDES[slide].cta2}</a>
@@ -701,11 +702,11 @@ export default function HomePage() {
             Deploy 7 AI security agents against a live breach scenario. No credit card required. Full incident portal access.
           </p>
           <div className="cs-cta-btns">
-            <Link href="/portal" id="cta-btn-trial" className="cs-btn-white-solid">
+            <Link href="/signup" id="cta-btn-trial" className="cs-btn-white-solid">
               Start free trial →
             </Link>
-            <Link href="/portal" className="cs-btn-transparent-outline">
-              Contact us
+            <Link href="/login" className="cs-btn-transparent-outline">
+              Sign in
             </Link>
             <a href="#platform" className="cs-btn-transparent-outline">
               View pricing
