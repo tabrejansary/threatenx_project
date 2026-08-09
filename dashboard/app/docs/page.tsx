@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -152,7 +152,7 @@ export default function DocsPage() {
 
           <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "24px 0" }} />
           <div style={{ fontSize: 11, fontWeight: 800, color: "#777", letterSpacing: 1 }}>SDK LINKS</div>
-          <ul style={{ list-style: "none", fontSize: 12, display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
+          <ul style={{ listStyle: "none", fontSize: 12, display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
             <li><a href="https://github.com/tabrejansary/threatenx_project" target="_blank" rel="noreferrer" style={{ color: "#ec0000", textDecoration: "none", fontWeight: 700 }}>GitHub Repository ↗</a></li>
             <li><Link href="/portal" style={{ color: "#555", textDecoration: "none" }}>Live Incident Portal</Link></li>
             <li><Link href="/pricing" style={{ color: "#555", textDecoration: "none" }}>API Quotas & Pricing</Link></li>

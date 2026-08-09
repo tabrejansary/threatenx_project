@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -84,7 +84,7 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: "#666", lineHeight: 1.5, marginBottom: 24 }}>Ideal for evaluating threat simulation and testing agent integrations offline.</p>
             <Link href="/portal" className="cs-btn-dark-outline" style={{ justifyContent: "center", width: "100%", marginBottom: 24, textAlign: "center" }}>Try Simulation Mode</Link>
             <hr style={{ border: "none", borderTop: "1px solid #eee", marginBottom: 20 }} />
-            <ul style={{ list-style: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
+            <ul style={{ listStyle: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
               <li>✓ 3 Seeded Attack Scenarios</li>
               <li>✓ Full 7-Agent Simulation</li>
               <li>✓ Interactive HITL Portal</li>
@@ -102,7 +102,7 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: "#666", lineHeight: 1.5, marginBottom: 24 }}>For growing security operations teams looking to automate triage & incident drafting.</p>
             <Link href="/signup" className="cs-btn-red" style={{ justifyContent: "center", width: "100%", marginBottom: 24 }}>Start 15-Day Trial</Link>
             <hr style={{ border: "none", borderTop: "1px solid #eee", marginBottom: 20 }} />
-            <ul style={{ list-style: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
+            <ul style={{ listStyle: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
               <li>✓ Everything in Sandbox</li>
               <li>✓ 50 Active Incidents / mo</li>
               <li>✓ Live Band.ai Agent Mesh</li>
@@ -122,7 +122,7 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: "#aaa", lineHeight: 1.5, marginBottom: 24 }}>Full autonomous response capabilities with 24/7 SIEM ingestion and custom containment scripts.</p>
             <Link href="/signup" className="cs-btn-red-lg" style={{ justifyContent: "center", width: "100%", marginBottom: 24 }}>Get Enterprise Access →</Link>
             <hr style={{ border: "none", borderTop: "1px solid #222", marginBottom: 20 }} />
-            <ul style={{ list-style: "none", fontSize: 13, color: "#ccc", display: "flex", flexDirection: "column", gap: 12 }}>
+            <ul style={{ listStyle: "none", fontSize: 13, color: "#ccc", display: "flex", flexDirection: "column", gap: 12 }}>
               <li>✓ Unlimited Incidents</li>
               <li>✓ Sub-3 Minute MTTR Guarantee</li>
               <li>✓ Custom EDR/SIEM API Connectors</li>
@@ -139,7 +139,7 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: "#666", lineHeight: 1.5, marginBottom: 24 }}>Deploy worker agents inside your private cloud or on-prem VPC. Zero PII leaves your firewall.</p>
             <Link href="/contact" className="cs-btn-dark-outline" style={{ justifyContent: "center", width: "100%", marginBottom: 24, textAlign: "center" }}>Contact Architecture Team</Link>
             <hr style={{ border: "none", borderTop: "1px solid #eee", marginBottom: 20 }} />
-            <ul style={{ list-style: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
+            <ul style={{ listStyle: "none", fontSize: 13, color: "#444", display: "flex", flexDirection: "column", gap: 12 }}>
               <li>✓ On-Prem Docker Agent Deployment</li>
               <li>✓ Bring Your Own Model (BYOM / Ollama)</li>
               <li>✓ FedRAMP / HIPAA Zero-Trust Architecture</li>
