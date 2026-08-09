@@ -1,0 +1,118 @@
+{
+  "scenario_id": "ransomware-lateral",
+  "scenario_name": "Ransomware Lateral Movement",
+  "severity": "critical",
+  "elapsed_seconds": 0.0,
+  "message_count": 8,
+  "dossier": {
+    "incident_id": "incident-2026-06-17-rw",
+    "severity": "critical",
+    "timeline": [
+      {
+        "time": "14:02:00",
+        "event": "Mass file encryption detected on LT-MKT-214",
+        "source": "Threat Detection Agent"
+      },
+      {
+        "time": "14:02:40",
+        "event": "Lateral spread via SMB to HR share FS-HR-01 (~38k files)",
+        "source": "Log Analysis Agent"
+      },
+      {
+        "time": "14:03:10",
+        "event": "Dropper confirmed: BlackForge ransomware (LockBit family)",
+        "source": "Malware Analysis Agent"
+      },
+      {
+        "time": "14:03:40",
+        "event": "Severity CRITICAL \u2014 employee PII on FS-HR-01",
+        "source": "Risk Assessment Agent"
+      },
+      {
+        "time": "14:04:10",
+        "event": "GDPR / CCPA 72-hour notification clock started",
+        "source": "Compliance Agent"
+      },
+      {
+        "time": "14:04:40",
+        "event": "Internal 'disconnect laptops' directive drafted",
+        "source": "PR Agent"
+      }
+    ],
+    "compliance_flags": {
+      "regulation_active": [
+        "GDPR",
+        "CCPA"
+      ],
+      "reporting_deadline_hours": 72
+    },
+    "communications": {
+      "customer_alert_draft": "We are managing an internal security incident. Customer-facing services remain available and we will provide updates if anything changes.",
+      "press_release_draft": "Holding statement: We are responding to a contained internal security incident and have engaged our full incident-response process. There is no indication of customer impact at this time."
+    },
+    "proposed_actions": [
+      {
+        "action_id": "act-01",
+        "action_type": "isolate_host",
+        "target": "LT-MKT-214",
+        "description": "Quarantine patient-zero laptop from the network immediately.",
+        "risk_level": "low"
+      },
+      {
+        "action_id": "act-02",
+        "action_type": "isolate_host",
+        "target": "FS-HR-01",
+        "description": "Halt SMB on the HR file share to stop the encryption spread.",
+        "risk_level": "high"
+      },
+      {
+        "action_id": "act-03",
+        "action_type": "lock_user",
+        "target": "mwilson@company.com",
+        "description": "Disable the compromised marketing account and all active sessions.",
+        "risk_level": "medium"
+      },
+      {
+        "action_id": "act-04",
+        "action_type": "block_ip",
+        "target": "91.219.236.18",
+        "description": "Block the BlackForge C2 beacon IP at the network firewall.",
+        "risk_level": "low"
+      }
+    ]
+  },
+  "feed": [
+    {
+      "from_agent": "EDR Telemetry",
+      "content": "EDR ALERT log-edr-44120: rapid file encryption on LT-MKT-214 (~1,450 files/min, .forge) after mwilson@company.com executed Q3_Invoice.pdf.exe at 14:02 UTC. Ransom note README_RESTORE.txt dropped.\nRaw "
+    },
+    {
+      "from_agent": "Threat Detection Agent",
+      "content": "Ransomware indicators on LT-MKT-214: mass file encryption (~1,450 files/min, .forge extension) began after mwilson@company.com opened Q3_Invoice.pdf.exe. Immediate containment investigation required."
+    },
+    {
+      "from_agent": "Log Analysis Agent",
+      "content": "The infection spread from LT-MKT-214 over SMB to the HR file share FS-HR-01, encrypting ~38,000 files. Ransom note README_RESTORE.txt was dropped. Malware Analysis Agent, please analyze Q3_Invoice.pdf"
+    },
+    {
+      "from_agent": "Malware Analysis Agent",
+      "content": "Q3_Invoice.pdf.exe is BlackForge ransomware (LockBit family): AES-256 encryption, deletes shadow copies, disables Defender, and spreads via SMB. Risk Assessment Agent, please elevate incident severity"
+    },
+    {
+      "from_agent": "Risk Assessment Agent",
+      "content": "Severity CRITICAL. The HR file share FS-HR-01 (SSNs, salaries, reviews for ~12,000 employees) is actively encrypting \u2014 operational outage plus employee-PII exposure. Compliance and PR action required "
+    },
+    {
+      "from_agent": "Compliance Agent",
+      "content": "Confirmed personal-data breach (employee PII) under GDPR/CCPA. 72-hour notification clock started. Draft prepared: Ransomware_Breach_Report_2026.pdf."
+    },
+    {
+      "from_agent": "PR Agent",
+      "content": "Drafted an URGENT internal directive to disconnect all laptops from the network, plus an employee notification and holding statement. Tone: urgent, directive, calm."
+    },
+    {
+      "from_agent": "Incident Commander",
+      "content": "Synthesis complete: CRITICAL ransomware (BlackForge/LockBit) actively encrypting the HR file share. Kill chain: malicious PDF \u2192 LT-MKT-214 patient zero \u2192 SMB lateral spread to FS-HR-01. Recommendation"
+    }
+  ]
+}

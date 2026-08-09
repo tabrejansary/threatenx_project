@@ -67,6 +67,9 @@ class AgentBrain:
         have reported — this keeps the cascade in PRD §4 order even though
         several agents may be mentioned simultaneously.
         """
+        if any(t.sender == self.name for t in history):
+            return True
+
         scenario = self._resolve_scenario(incoming, history)
         if not self._dependencies_met(incoming, history):
             missing = self._missing_dependencies(incoming, history)

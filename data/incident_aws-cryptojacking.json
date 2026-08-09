@@ -1,0 +1,115 @@
+{
+  "scenario_id": "aws-cryptojacking",
+  "scenario_name": "AWS Cloud Cryptojacking",
+  "severity": "critical",
+  "elapsed_seconds": 0.0,
+  "message_count": 8,
+  "dossier": {
+    "incident_id": "incident-2026-06-18-cj",
+    "severity": "critical",
+    "timeline": [
+      {
+        "time": "03:47:00",
+        "event": "48 GPU EC2 instances launched in ap-south-1",
+        "source": "Threat Detection Agent"
+      },
+      {
+        "time": "03:47:35",
+        "event": "Leaked IAM key (ci-deploy-bot) traced to public GitHub repo",
+        "source": "Log Analysis Agent"
+      },
+      {
+        "time": "03:48:05",
+        "event": "Startup scripts run XMRig to Monero mining pool",
+        "source": "Malware Analysis Agent"
+      },
+      {
+        "time": "03:48:35",
+        "event": "Severity CRITICAL \u2014 ~$84k/day, no data accessed",
+        "source": "Risk Assessment Agent"
+      },
+      {
+        "time": "03:49:00",
+        "event": "No GDPR/CCPA clock \u2014 financial / cloud-abuse only",
+        "source": "Compliance Agent"
+      },
+      {
+        "time": "03:49:30",
+        "event": "Internal-only briefing prepared (no public disclosure)",
+        "source": "PR Agent"
+      }
+    ],
+    "compliance_flags": {
+      "regulation_active": [],
+      "reporting_deadline_hours": 0
+    },
+    "communications": {
+      "customer_alert_draft": "No customer or personal data was accessed in this incident; no customer notification is required.",
+      "press_release_draft": "Internal only \u2014 no public statement required. This was a cloud-resource abuse incident with no customer-data involvement."
+    },
+    "proposed_actions": [
+      {
+        "action_id": "act-01",
+        "action_type": "revoke_key",
+        "target": "AKIA4XMPL3QZ7K2NDEMO",
+        "description": "Revoke the leaked IAM access key immediately.",
+        "risk_level": "low"
+      },
+      {
+        "action_id": "act-02",
+        "action_type": "terminate_instances",
+        "target": "48 x p4d.24xlarge (ap-south-1)",
+        "description": "Terminate all rogue GPU EC2 instances.",
+        "risk_level": "medium"
+      },
+      {
+        "action_id": "act-03",
+        "action_type": "lock_user",
+        "target": "ci-deploy-bot",
+        "description": "Disable the compromised IAM principal pending key rotation.",
+        "risk_level": "medium"
+      },
+      {
+        "action_id": "act-04",
+        "action_type": "block_ip",
+        "target": "45.135.232.9",
+        "description": "Block the attacker source IP and egress to the mining pool.",
+        "risk_level": "low"
+      }
+    ]
+  },
+  "feed": [
+    {
+      "from_agent": "EDR Telemetry",
+      "content": "DATADOG ALERT log-cloudtrail-77310: 48 GPU EC2 instances (p4d.24xlarge) launched in ap-south-1 at 03:47 UTC via IAM key AKIA4XMPL3 (principal ci-deploy-bot), from 45.135.232.9.\nRaw event:\n{\n  \"timesta"
+    },
+    {
+      "from_agent": "Threat Detection Agent",
+      "content": "Cloud anomaly: 48 GPU EC2 instances (p4d.24xlarge) launched in ap-south-1 via IAM key AKIA4XMPL3 \u2014 a key found in the public repository github.com/acme/payments-api. Investigate immediately."
+    },
+    {
+      "from_agent": "Log Analysis Agent",
+      "content": "The leaked key belongs to ci-deploy-bot. CloudTrail shows 48 RunInstances calls from 45.135.232.9 in ap-south-1, far from our normal regions. Malware Analysis Agent, please inspect the instance startu"
+    },
+    {
+      "from_agent": "Malware Analysis Agent",
+      "content": "The EC2 user-data scripts install XMRig and connect to pool.minexmr.com:4444 (Monero). This is cryptojacking, not data theft. Risk and Compliance, please assess."
+    },
+    {
+      "from_agent": "Risk Assessment Agent",
+      "content": "Severity CRITICAL by cost: ~$84,000/day in rogue GPU compute. No data store was accessed \u2014 this is financial/compute theft, not a data breach. Compliance and PR, please confirm scope and notify Financ"
+    },
+    {
+      "from_agent": "Compliance Agent",
+      "content": "This is NOT a personal-data breach \u2014 no GDPR/CCPA clock applies. This is a cloud-abuse and financial-loss event; notify Finance, the cloud security team, and AWS Trust & Safety."
+    },
+    {
+      "from_agent": "PR Agent",
+      "content": "No customer data was affected, so no public disclosure is required. Prepared an internal FinOps/security briefing only. Tone: factual, internal."
+    },
+    {
+      "from_agent": "Incident Commander",
+      "content": "Synthesis complete: cryptojacking via a leaked IAM key (~$84k/day, no data breach). Kill chain: key exposed in public repo \u2192 48 rogue GPU EC2 instances \u2192 XMRig Monero mining. Recommendation: revoke th"
+    }
+  ]
+}

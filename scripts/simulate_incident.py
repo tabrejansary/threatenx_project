@@ -24,6 +24,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dotenv import load_dotenv
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from threatenx.brain import AgentBrain, Turn
 from threatenx.config import AGENTS
 from threatenx.mock_mesh import MockMesh

@@ -1,0 +1,117 @@
+{
+  "scenario_id": "romanian-pii",
+  "scenario_name": "Romanian PII Breach",
+  "severity": "critical",
+  "elapsed_seconds": 0.0,
+  "message_count": 8,
+  "dossier": {
+    "incident_id": "incident-2026-06-14-geo",
+    "severity": "critical",
+    "timeline": [
+      {
+        "time": "10:15:00",
+        "event": "Anomaly detected: Login from Romania",
+        "source": "Threat Detection Agent"
+      },
+      {
+        "time": "10:15:30",
+        "event": "DB-Prod-09 accessed; 4.2 GB exfiltrated",
+        "source": "Log Analysis Agent"
+      },
+      {
+        "time": "10:16:00",
+        "event": "dump_pii.py confirmed as Trojan script",
+        "source": "Malware Analysis Agent"
+      },
+      {
+        "time": "10:16:30",
+        "event": "Severity CRITICAL; GDPR scope (PII of 150k EU residents)",
+        "source": "Risk Assessment Agent"
+      },
+      {
+        "time": "10:17:00",
+        "event": "GDPR 72-hour reporting clock started",
+        "source": "Compliance Agent"
+      },
+      {
+        "time": "10:17:30",
+        "event": "Customer / press / internal communications drafted",
+        "source": "PR Agent"
+      }
+    ],
+    "compliance_flags": {
+      "regulation_active": [
+        "GDPR"
+      ],
+      "reporting_deadline_hours": 72
+    },
+    "communications": {
+      "customer_alert_draft": "Subject: Important Security Notice \u2014 Please Reset Your Password\n\nWe recently detected unauthorized access affecting some customer account data. As a precaution we are requiring a password reset. Your security is our priority and we are taking immediate action.",
+      "press_release_draft": "FOR IMMEDIATE RELEASE: We identified and contained a security incident involving unauthorized access to a customer database. We have engaged regulators, notified affected users, and implemented additional safeguards."
+    },
+    "proposed_actions": [
+      {
+        "action_id": "act-01",
+        "action_type": "block_ip",
+        "target": "185.112.144.12",
+        "description": "Block Romanian exfiltration destination IP at the firewall.",
+        "risk_level": "low"
+      },
+      {
+        "action_id": "act-02",
+        "action_type": "lock_user",
+        "target": "jsmith@company.com",
+        "description": "Revoke active AD sessions and disable logins for jsmith.",
+        "risk_level": "medium"
+      },
+      {
+        "action_id": "act-03",
+        "action_type": "isolate_host",
+        "target": "DB-Prod-09",
+        "description": "Restrict inbound queries to DB-Prod-09 pending forensics.",
+        "risk_level": "medium"
+      },
+      {
+        "action_id": "act-04",
+        "action_type": "password_reset",
+        "target": "all-affected-customers",
+        "description": "Trigger a system-wide password reset for affected accounts.",
+        "risk_level": "low"
+      }
+    ]
+  },
+  "feed": [
+    {
+      "from_agent": "EDR Telemetry",
+      "content": "EDR ALERT log-ad-99812: successful login for jsmith@company.com from 185.112.144.12 (Romania) at 10:15 UTC via MFA_Token. Prior login Chicago, USA at 06:12 UTC.\nRaw event:\n{\n  \"timestamp\": \"2026-06-14"
+    },
+    {
+      "from_agent": "Threat Detection Agent",
+      "content": "Anomaly Detected: User jsmith@company.com logged in from IP 185.112.144.12 (Romania) at 10:15 UTC. Last known location was Chicago, USA at 06:12 UTC. Log Analysis and Risk Assessment, please investiga"
+    },
+    {
+      "from_agent": "Log Analysis Agent",
+      "content": "Investigation results: session executed SELECT * FROM Customers on DB-Prod-09. 4.2 GB transferred to external host 185.112.144.12. Suspicious file dump_pii.py left in C:\\Users\\jsmith\\AppData\\Local\\Tem"
+    },
+    {
+      "from_agent": "Malware Analysis Agent",
+      "content": "Analysis of dump_pii.py: an exfiltration script disguised as a backup tool. Disables local audit logs and beacons to exfil-server-romania.com. Signature matches a Trojan framework. Risk Assessment Age"
+    },
+    {
+      "from_agent": "Risk Assessment Agent",
+      "content": "Risk Profile Updated: Severity CRITICAL. Compromised asset DB-Prod-09 (active customer database) holding PII for ~150,000 EU residents. GDPR scope confirmed. Compliance Agent and PR Agent, action requ"
+    },
+    {
+      "from_agent": "Compliance Agent",
+      "content": "Regulatory alert: confirmed PII breach under GDPR Article 33. 72-hour reporting clock started. Draft notification prepared: GDPR_Breach_Report_Incident_2026.pdf."
+    },
+    {
+      "from_agent": "PR Agent",
+      "content": "Draft communications completed: customer password-reset alert, internal executive briefing, and public press release ready. Recommended tone: transparent, reassuring, safety-first."
+    },
+    {
+      "from_agent": "Incident Commander",
+      "content": "Synthesis complete. Dossier finalized. Severity: CRITICAL. Kill chain: credential theft via geographic anomaly \u2192 bulk PII exfiltration \u2192 Trojan dropper. Recommendation: immediate account lockdown, IP "
+    }
+  ]
+}
